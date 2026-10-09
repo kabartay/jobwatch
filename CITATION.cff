@@ -9,6 +9,10 @@ authors:
     email: mukharbek.organokov@gmail.com
     orcid: "https://orcid.org/0000-0002-3093-3456"
 repository-code: "https://github.com/kabartay/jobwatch"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.23269419
+    description: The concept DOI, which always resolves to the newest version.
 abstract: >-
   A Visual Studio Code extension that watches Hugging Face Jobs from the status
   bar: which jobs are queued or running, their estimated cost so far, and this
