@@ -83,3 +83,19 @@ with a history would raise a notification for every past job.
 
 Implement `JobProvider` (`listJobs`, `listHardware`) in `infrastructure/`, with a pure parser in
 `domain/`, and choose it in `extension.ts`. Nothing in `application/` or `ui/` changes.
+
+## Providers considered
+
+**Kaggle, checked 2026-10-09 and not built.** The CLI's API (`kaggle kernels list --mine`,
+`kaggle kernels status`) was probed against a real account:
+
+| Needed | What Kaggle offers |
+| --- | --- |
+| Which runs are active | A list of your kernels by last run date, but 2 of 20 private notebooks came back as `[Private Notebook]` with no slug, so they cannot be watched |
+| Status | One request per kernel; works with the slug Kaggle derives from the title (10 of 11), not the `id` in `kernel-metadata.json`. A kernel pushed but never run, for example refused for quota, answers 404 |
+| Cost | None: Kaggle is free |
+| Run duration | Not exposed; only the last run's start time |
+| Remaining GPU quota | Not exposed; it shows only as a refused push |
+
+What remained, a status light and completion alerts for a few recent kernels, did not justify a
+provider. Revisit if Kaggle adds quota or duration to its API.
