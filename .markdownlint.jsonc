@@ -1,0 +1,7 @@
+// Same convention as finkele-axiom: no line-length limit, the README opens with an HTML header.
+{
+  "MD013": false,
+  "MD033": false,
+  "MD036": false,
+  "MD041": false
+}

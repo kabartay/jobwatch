@@ -1,0 +1,129 @@
+{
+  "name": "jobwatch",
+  "displayName": "Jobwatch: GPU Jobs and Spend",
+  "description": "Your Hugging Face Jobs in the VS Code status bar: what is running, what it has cost so far, and an alert when a job fails, runs out of memory, nears its timeout or sits in the queue.",
+  "version": "0.1.0",
+  "publisher": "kabartay",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1C1F26",
+    "theme": "dark"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kabartay/jobwatch.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kabartay/jobwatch/issues"
+  },
+  "homepage": "https://github.com/kabartay/jobwatch#readme",
+  "qna": "https://github.com/kabartay/jobwatch/issues",
+  "keywords": [
+    "hugging face",
+    "jobs",
+    "gpu",
+    "cost",
+    "machine learning",
+    "status bar"
+  ],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Machine Learning",
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "jobwatch.refresh",
+        "title": "Refresh Jobs",
+        "category": "Jobwatch",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "jobwatch.openJob",
+        "title": "Open a Job…",
+        "category": "Jobwatch",
+        "icon": "$(link-external)"
+      },
+      {
+        "command": "jobwatch.showLog",
+        "title": "Show Log",
+        "category": "Jobwatch",
+        "icon": "$(output)"
+      }
+    ],
+    "configuration": {
+      "title": "Jobwatch",
+      "properties": {
+        "jobwatch.monthlyBudgetUsd": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "markdownDescription": "Warn once a month when estimated spend this calendar month passes this many US dollars. `0` turns the budget off."
+        },
+        "jobwatch.notifyOnComplete": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Show a notification when a job completes, with its duration and estimated cost. Failures always notify."
+        },
+        "jobwatch.timeoutWarningMinutes": {
+          "type": "number",
+          "default": 15,
+          "minimum": 0,
+          "markdownDescription": "Warn when a running job is this many minutes from its own timeout, before it is killed. `0` turns it off."
+        },
+        "jobwatch.queueWarningMinutes": {
+          "type": "number",
+          "default": 20,
+          "minimum": 0,
+          "markdownDescription": "Warn when a job has waited this many minutes for hardware without starting. `0` turns it off."
+        },
+        "jobwatch.pollSecondsActive": {
+          "type": "number",
+          "default": 60,
+          "minimum": 30,
+          "markdownDescription": "Seconds between refreshes while a job is queued or running."
+        },
+        "jobwatch.pollSecondsIdle": {
+          "type": "number",
+          "default": 600,
+          "minimum": 120,
+          "markdownDescription": "Seconds between refreshes when nothing is queued or running."
+        },
+        "jobwatch.namespace": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "The user or organisation whose jobs to watch. Empty means the account the Hugging Face token belongs to."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "typecheck": "tsc --noEmit -p ./",
+    "lint": "eslint .",
+    "test": "npm run compile && node --test \"out/test/**/*.test.js\"",
+    "test:coverage": "npm run compile && node --test --experimental-test-coverage --test-coverage-exclude=\"out/test/**\" \"out/test/**/*.test.js\"",
+    "check": "npm run typecheck && npm run lint && npm test",
+    "package": "vsce package",
+    "vscode:prepublish": "rm -rf out && npm run compile"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.4",
+    "@types/vscode": "~1.85.0",
+    "@vscode/vsce": "^4.0.0",
+    "eslint": "^10.12.0",
+    "jiti": "^2.7.0",
+    "typescript": "^5.4.0",
+    "typescript-eslint": "^8.71.1"
+  }
+}
