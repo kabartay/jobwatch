@@ -71,16 +71,34 @@ function stageMark(job: PricedJob): string {
   return job.stage === 'COMPLETED' ? '✓' : job.stage === 'ERROR' ? '✗' : '–';
 }
 
+/**
+ * A job's running time as shown to the user: `waiting 12m` while queued, `1h 05m` once known,
+ * `no end time` when the provider recorded none and Jobwatch never saw it stop.
+ */
+export function jobTimeText(job: PricedJob, now: Date): string {
+  if (job.phase === 'queued') {
+    return `waiting ${formatDuration((now.getTime() - job.createdAt.getTime()) / 1000)}`;
+  }
+  if (job.elapsedRunningSecs === undefined) {
+    return 'no end time';
+  }
+  return job.endObserved ? `≥ ${formatDuration(job.elapsedRunningSecs)}` : formatDuration(job.elapsedRunningSecs);
+}
+
+/**
+ * A job's estimated cost as shown to the user: `$0.84`, `≥ $0.84` when the end was observed rather
+ * than reported, `up to $4.00` when only its time limit bounds it, or `—` when nothing does.
+ */
+export function jobCostText(job: PricedJob): string {
+  if (job.costUsd !== undefined) {
+    return job.endObserved ? `≥ ${formatUsd(job.costUsd)}` : formatUsd(job.costUsd);
+  }
+  return job.maxCostUsd !== undefined ? `up to ${formatUsd(job.maxCostUsd)}` : '—';
+}
+
 function jobRow(job: PricedJob, now: Date): string {
-  const time =
-    job.phase === 'queued'
-      ? `waiting ${formatDuration((now.getTime() - job.createdAt.getTime()) / 1000)}`
-      : job.elapsedRunningSecs !== undefined
-        ? formatDuration(job.elapsedRunningSecs)
-        : '—';
-  const cost = job.costUsd !== undefined ? formatUsd(job.costUsd) : '—';
   const detail = job.stage === 'ERROR' && isOutOfMemory(job.message) ? ' · out of memory' : '';
-  return `| ${stageMark(job)} | [${jobLabel(job).replace(/\|/g, '/')}](${job.url}) | \`${job.flavor}\` | ${time}${detail} | ${cost} |`;
+  return `| ${stageMark(job)} | [${jobLabel(job).replace(/\|/g, '/')}](${job.url}) | \`${job.flavor}\` | ${jobTimeText(job, now)}${detail} | ${jobCostText(job)} |`;
 }
 
 /**

@@ -9,7 +9,7 @@ import * as vscode from 'vscode';
 import { ProviderError } from '../application/errors';
 import type { JobService, Snapshot } from '../application/jobService';
 import type { Logger } from '../application/ports';
-import { formatDuration, formatUsd, jobLabel } from '../domain/format';
+import { jobCostText, jobLabel, jobTimeText } from '../domain/format';
 import type { Alert } from '../domain/types';
 import { CONFIG_SECTION, readConfig } from './config';
 import { JobStatusBar } from './statusBar';
@@ -64,16 +64,11 @@ export class JobController implements vscode.Disposable {
       void vscode.window.showInformationMessage('Jobwatch: no jobs to open yet.');
       return;
     }
+    const now = new Date();
     const items = this.snapshot.jobs.slice(0, 30).map((j) => ({
       label: jobLabel(j),
       description: `${j.flavor} · ${j.phase === 'finished' ? j.stage.toLowerCase() : j.phase}`,
-      detail: [
-        j.elapsedRunningSecs !== undefined ? formatDuration(j.elapsedRunningSecs) : undefined,
-        j.costUsd !== undefined ? `≈ ${formatUsd(j.costUsd)}` : undefined,
-        j.createdAt.toLocaleString(),
-      ]
-        .filter(Boolean)
-        .join(' · '),
+      detail: [jobTimeText(j, now), jobCostText(j), j.createdAt.toLocaleString()].filter((t) => t !== '—').join(' · '),
       url: j.url,
     }));
     const choice = await vscode.window.showQuickPick(items, { title: 'Jobwatch: open a job', matchOnDescription: true });

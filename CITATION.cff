@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+title: "Jobwatch: a VS Code extension showing Hugging Face Jobs and their estimated cost in the status bar"
+message: >-
+  If you use or build on this software, please cite it.
+type: software
+authors:
+  - family-names: Organokov
+    given-names: Mukharbek
+    email: mukharbek.organokov@gmail.com
+    orcid: "https://orcid.org/0000-0002-3093-3456"
+repository-code: "https://github.com/kabartay/jobwatch"
+abstract: >-
+  A Visual Studio Code extension that watches Hugging Face Jobs from the status
+  bar: which jobs are queued or running, their estimated cost so far, and this
+  month's estimated spend. It notifies once when a job fails (naming an
+  out-of-memory kill as such), completes, nears its own time limit or waits too
+  long for hardware, and when spend passes a monthly budget. Cost is estimated
+  from running time and the provider's own per-minute price list. Because the
+  provider records no end time for a cancelled job, the extension substitutes the
+  last time it observed the job running, and bounds jobs it never observed by
+  their time limits rather than guessing. Read-only, with no runtime
+  dependencies and no telemetry. Unofficial; not affiliated with Hugging Face.
+keywords:
+  - Hugging Face
+  - GPU jobs
+  - cost monitoring
+  - Visual Studio Code extension
+  - machine learning operations
+license: MIT
+version: 0.1.1
+date-released: "2026-10-09"

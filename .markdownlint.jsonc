@@ -3,5 +3,7 @@
   "MD013": false,
   "MD033": false,
   "MD036": false,
-  "MD041": false
+  "MD041": false,
+  // Keep a Changelog repeats "Added" / "Changed" under each version.
+  "MD024": { "siblings_only": true }
 }

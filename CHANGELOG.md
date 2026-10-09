@@ -6,6 +6,21 @@ All notable changes to Jobwatch. The format follows
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-10-09
+
+### Changed
+
+- A cancelled job with no end time now shows `no end time · up to $4.00`, the most it could
+  have cost from its time limit, instead of a blank, in both the job picker and the tooltip. A
+  cost taken from Jobwatch's own sighting is marked `≥` as the lower bound it is.
+- The README shows what Jobwatch looks like, the wording of each alert, and how cost is
+  estimated in each case.
+
+### Added
+
+- Citation metadata (`CITATION.cff`, `.zenodo.json`) for archiving on Zenodo; neither ships in
+  the extension package.
+
 ## [0.1.0] — 2026-10-09
 
 The first version: Hugging Face Jobs.
@@ -25,5 +40,6 @@ The first version: Hugging Face Jobs.
   minutes otherwise) and back-off on rate limits.
 - **Jobwatch: Refresh Jobs**, **Jobwatch: Open a Job…** and **Jobwatch: Show Log**.
 
-[Unreleased]: https://github.com/kabartay/jobwatch/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/kabartay/jobwatch/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/kabartay/jobwatch/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kabartay/jobwatch/releases/tag/v0.1.0

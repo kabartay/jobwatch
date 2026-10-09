@@ -5,7 +5,7 @@
 import { strict as assert } from 'node:assert';
 import { describe, it } from 'node:test';
 import { priceJobs, spendOf } from '../../domain/cost';
-import { formatDuration, formatUsd, isOutOfMemory, jobLabel, statusText, tooltipMarkdown } from '../../domain/format';
+import { formatDuration, formatUsd, isOutOfMemory, jobCostText, jobLabel, jobTimeText, statusText, tooltipMarkdown } from '../../domain/format';
 import type { Spend } from '../../domain/types';
 import { HARDWARE, job } from '../fixtures';
 
@@ -83,5 +83,34 @@ describe('tooltipMarkdown, unpriced jobs', () => {
   it('bounds what jobs with no end time could have cost', () => {
     const text = tooltipMarkdown([], spend({ unpricedCount: 2, unpricedMaxUsd: 4 }), 0, NOW);
     assert.match(text, /2 job\(s\) this month have no end time and are not counted: at most \$4\.00 more, by their time limits/);
+  });
+});
+
+describe('jobTimeText and jobCostText', () => {
+  it('shows a known cost plainly', () => {
+    const [done] = priceJobs([job({ stage: 'COMPLETED', runningSecs: 310 })], HARDWARE, NOW);
+    assert.ok(done);
+    assert.equal(jobTimeText(done, NOW), '5m');
+    assert.equal(jobCostText(done), '$0.09');
+  });
+
+  it('bounds a cancelled job with no end time by its time limit', () => {
+    const [cancelled] = priceJobs([job({ stage: 'CANCELED', timeoutSecs: 7200 })], HARDWARE, NOW);
+    assert.ok(cancelled);
+    assert.equal(jobTimeText(cancelled, NOW), 'no end time');
+    assert.equal(jobCostText(cancelled), 'up to $2.00');
+  });
+
+  it('marks an observed end as a lower bound', () => {
+    const [seen] = priceJobs([job({ stage: 'CANCELED', finishedAt: new Date('2026-10-09T10:13:00Z'), endObserved: true })], HARDWARE, NOW);
+    assert.ok(seen);
+    assert.equal(jobTimeText(seen, NOW), '≥ 10m');
+    assert.equal(jobCostText(seen), '≥ $0.17');
+  });
+
+  it('shows how long a queued job has waited', () => {
+    const [queued] = priceJobs([job({ stage: 'SCHEDULING', startedAt: undefined })], HARDWARE, NOW);
+    assert.ok(queued);
+    assert.equal(jobTimeText(queued, NOW), 'waiting 1h 03m');
   });
 });

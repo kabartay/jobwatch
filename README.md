@@ -19,41 +19,62 @@
   <a href="#caveats"><img src="https://img.shields.io/badge/status-unofficial-orange.svg" alt="Unofficial"></a>
 </p>
 
+## At a glance
+
 ```text
-$(pulse) 2 running · 1 queued · $1.84          while jobs are active
+$(pulse) 2 running · 1 queued · $1.84          while jobs are active: what it has cost so far
 $(server-process) $12.40 this month            when nothing is running
 ```
 
-| Part | Means |
-| --- | --- |
-| `2 running · 1 queued` | jobs on your account right now |
-| `$1.84` | estimated cost so far of the jobs still running |
-| `$12.40 this month` | estimated spend on jobs started this calendar month |
+Hover for every active job and the latest finished ones. Click to pick any job and open its page:
 
-Hover for every active job and the latest finished ones: hardware, running time, estimated cost,
-and *out of memory* where that is why a job died. Click to open any job's page.
+<p align="center">
+  <img src="images/picker.png" width="560" alt="Jobwatch's job picker listing recent Hugging Face jobs with hardware, status, running time and estimated cost">
+</p>
 
 ## Why
 
 GPU time is billed by the minute, and the expensive mistakes are the quiet ones: a job that died
 of out-of-memory five minutes in while you waited for it, one stuck in the queue for an hour, one
 about to be killed at its time limit with no checkpoint, one left running overnight. Jobwatch
-watches for each of these and tells you once.
+watches for each of them and tells you once.
+
+## What it tells you
+
+Each alert fires once per job, with a button to open it. Installing Jobwatch is quiet: jobs that
+finished before are recorded, not announced.
+
+| When | You see |
+| --- | --- |
+| A job is killed for memory | *fintfm-s1 ran out of memory on a10g-small after 5m, about $0.09.* |
+| A job fails another way | *fintfm-s1 failed after 2m: Job failed with exit code: 1.* |
+| A job completes | *fintfm-s1 completed after 1h 12m, about $1.20.* (can be turned off) |
+| A job nears its own time limit | *fintfm-s1 will hit its 2h 00m timeout in 12m and be stopped.* |
+| A job waits for hardware | *fintfm-s1 has waited 25m for a10g-large hardware without starting.* |
+| Spend passes your budget | *Estimated Hugging Face Jobs spend this month is $51.20, past your $50.00 budget.* (once a month) |
+
+## How cost is estimated
+
+Running time × the hardware's per-minute price from Hugging Face's own price list. Running time
+comes from the best source available, and the display says which:
+
+| Job | Shown as |
+| --- | --- |
+| Running | time so far, measured live: `1h 05m · $1.08` |
+| Finished, time reported | `5m · $0.09` |
+| Cancelled while Jobwatch was watching | from the last time it saw the job running, a lower bound: `≥ 40m · ≥ $0.67` |
+| Cancelled before Jobwatch saw it | Hugging Face records no end time, so the most it could have cost, from its time limit: `no end time · up to $4.00` |
+
+These are estimates; your Hugging Face invoice is the authority.
 
 ## Features
 
-- **Alerts that fire once.** A notification when a job fails (naming an out-of-memory kill as
-  such), completes, is within minutes of its own timeout, or has waited too long for hardware;
-  and once a month when estimated spend passes your budget. Installing it is quiet: jobs that
-  finished before are recorded, not announced.
-- **Estimated cost, stated as an estimate.** Running time × the hardware's listed per-minute price,
-  from Hugging Face's own price list.
-- **Honest about what it cannot know.** Hugging Face records no end time for a cancelled job.
-  Jobwatch fills it in from the last time it saw the job running, and for jobs it never saw it
-  shows the most they could have cost, from their time limits, rather than a guess.
-- **Zero setup.** It uses the token the `hf` CLI already stored. Nothing to paste.
-- **Read-only and light.** It never starts, stops or changes a job. It polls every minute while
-  something is running and every ten minutes otherwise, and backs off if asked.
+- **Zero setup.** Uses the token the `hf` CLI already stored. Nothing to paste.
+- **Read-only.** It never starts, stops or changes a job.
+- **Light.** Polls every minute while something is queued or running, every ten minutes
+  otherwise, backs off when asked, and refreshes when you return to the window.
+- **Your whole history.** Follows the job list across pages, so totals include every job.
+- **No runtime dependencies, no telemetry.**
 
 ## Install
 
@@ -99,8 +120,13 @@ running, and has no telemetry. Job environment variables and secrets are never r
   which may change.
 - **Costs are estimates**: running time × listed price. Your Hugging Face invoice is the
   authority.
-- **Hugging Face Jobs only, for now.** Kaggle is planned; each provider can be switched on
-  separately.
+- **Hugging Face Jobs only, for now.** See the roadmap.
+
+## Roadmap
+
+- **Kaggle**, as far as its API allows: run status, since it exposes no quota or cost.
+- More providers behind the same interface (Modal, RunPod, Lambda), each switched on separately,
+  so one status bar shows all your GPU jobs and spend.
 
 ## Documentation
 
