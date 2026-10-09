@@ -7,7 +7,7 @@
 
 import type { Hardware, Job, ProviderId } from '../domain/types';
 
-/** A service that runs jobs. Hugging Face in 0.1; Kaggle and others implement the same shape. */
+/** A service that runs jobs. Hugging Face today; another service would implement the same shape. */
 export interface JobProvider {
   readonly id: ProviderId;
   /**

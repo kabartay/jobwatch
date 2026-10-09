@@ -120,15 +120,7 @@ running, and has no telemetry. Job environment variables and secrets are never r
   which may change.
 - **Costs are estimates**: running time × listed price. Your Hugging Face invoice is the
   authority.
-- **Hugging Face Jobs only.** See the roadmap.
-
-## Roadmap
-
-- More providers behind the same interface (Modal, RunPod, Lambda), each switched on separately,
-  so one status bar shows all your GPU jobs and spend.
-- **Kaggle: investigated, not planned.** Its API exposes no GPU quota, no run duration and no cost,
-  hides some private notebooks from listings, and needs one request per kernel for status; see
-  [Architecture](docs/ARCHITECTURE.md#providers-considered).
+- **Hugging Face Jobs only.**
 
 ## Documentation
 

@@ -5,7 +5,7 @@
  * its own response onto them, so the status bar never knows which service a job came from.
  */
 
-/** Where a job runs. Only Hugging Face in 0.1; Kaggle is planned. */
+/** Where a job runs. */
 export type ProviderId = 'huggingface';
 
 /**
