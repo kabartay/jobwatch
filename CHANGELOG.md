@@ -6,6 +6,13 @@ All notable changes to Jobwatch. The format follows
 
 ## [Unreleased]
 
+## [0.1.3] — 2026-10-09
+
+### Changed
+
+- The README's job picker screenshot shows completed runs with their running time and cost. It
+  also carries the Zenodo DOI badge. No change in behaviour.
+
 ## [0.1.2] — 2026-10-09
 
 ### Changed
@@ -47,7 +54,8 @@ The first version: Hugging Face Jobs.
   minutes otherwise) and back-off on rate limits.
 - **Jobwatch: Refresh Jobs**, **Jobwatch: Open a Job…** and **Jobwatch: Show Log**.
 
-[Unreleased]: https://github.com/kabartay/jobwatch/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/kabartay/jobwatch/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/kabartay/jobwatch/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/kabartay/jobwatch/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/kabartay/jobwatch/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/kabartay/jobwatch/releases/tag/v0.1.0
