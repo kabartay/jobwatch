@@ -10,7 +10,7 @@
   ],
   "license": "mit",
   "access_right": "open",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "Hugging Face",
     "GPU jobs",

@@ -2,7 +2,7 @@
   "name": "jobwatch",
   "displayName": "Jobwatch: GPU Jobs and Spend",
   "description": "Your Hugging Face Jobs in the VS Code status bar: what is running, what it has cost so far, and an alert when a job fails, runs out of memory, nears its timeout or sits in the queue.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "kabartay",
   "icon": "images/icon.png",
   "galleryBanner": {
